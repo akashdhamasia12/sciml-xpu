@@ -1,0 +1,14 @@
+setuptools
+py-cpuinfo
+psutil
+gputil
+pyyaml
+h5py
+numpy
+tabulate
+click
+cmake
+aws-shell
+lxml
+bs4
+matplotlib

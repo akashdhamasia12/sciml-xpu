@@ -1,0 +1,129 @@
+# config.yml
+
+# SciML-Bench
+# Copyright © 2021 Scientific Machine Learning Research Group
+# Scientific Computing Department, Rutherford Appleton Laboratory
+# Science and Technology Facilities Council, UK. 
+# All rights reserved.
+
+# This is a configuration file for the sciml-bench.
+
+
+
+# Location where the datasets are.
+data_mirrors:
+    stfc_mirror: "https://s3.echo.stfc.ac.uk"
+    osn_mirror: "https://sdsc.osn.xsede.org"
+
+# Download commands - parameterised to servers 
+download_commands: 
+    download_command1: "aws s3 --no-sign-request --endpoint-url $SERVER sync $DATASET_URI $DATASET_DIR"
+    
+# Dataset and output directories
+directories:
+    dataset_root_dir: ~/sciml_bench/datasets
+    output_root_dir: ~/sciml_bench/outputs
+    models_dir: ~/sciml_bench/models
+    docs_dir: ~/sciml_bench/docs
+
+
+# List of datasets
+datasets: 
+    mnist:
+        end_point: 'sciml-datasets/ts'
+        download_command: download_command1
+    em_graphene_sim:
+        end_point: 'sciml-datasets/ms'
+        download_command: download_command1
+    dms_sim:
+        end_point: 'sciml-datasets/ms'
+        download_command: download_command1
+    cloud_slstr_ds1:
+        end_point: 'sciml-datasets/es'
+        download_command: download_command1
+    cloud_slstr_ds2:
+        end_point: 'sciml-datasets/es'
+        download_command: download_command1
+    optical_damage_ds1:
+        end_point: 'sciml-datasets/ins'
+        download_command: download_command1
+    stemdl_ds1:
+        end_point: 'sciml-datasets/ms'
+        download_command: download_command1
+    stemdl_reconst_ds1:
+        end_point: 'sciml-datasets/ms'
+        download_command: download_command1
+    hydronet_ds1:
+        end_point: 'sciml-datasets/ms'
+        download_command: download_command1
+    inelastic_ds1:
+        end_point: 'sciml-datasets/ms'
+        download_command: download_command1
+
+
+# List of benchmarks
+benchmarks:
+
+    # Production level benchmarks 
+    em_denoise:
+        datasets: em_graphene_sim
+        dependencies: 'torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu, oneccl_bind_pt -f https://developer.intel.com/ipex-whl-stable-xpu, scikit-image'
+        types: 'training, inference'
+        group: 'science'
+
+    dms_structure:
+        datasets: dms_sim
+        dependencies: 'torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu, oneccl_bind_pt -f https://developer.intel.com/ipex-whl-stable-xpu, scikit-learn, scikit-learn-intelex, scikit-image'
+        types: 'training, inference'
+        group: 'science'
+
+    slstr_cloud:
+        datasets: cloud_slstr_ds1
+        dependencies: 'intel-extension-for-tensorflow[gpu], intel-optimization-for-horovod, scikit-learn, h5py'
+        types: 'training, inference'
+        group: 'science'
+    
+    optical_damage:
+        datasets: optical_damage_ds1
+        dependencies: 'intel-extension-for-tensorflow[gpu], intel-optimization-for-horovod, scikit-learn, h5py, tqdm'
+        types: 'training, inference'
+        group: 'science'
+
+    stemdl_classification:
+        datasets: stemdl_ds1
+        dependencies: 'git+https://github.com/laserkelvin/lightning.git@1.8.6-patch, torchvision==0.14.1a0 -f https://developer.intel.com/ipex-whl-stable-xpu, tensorboard, scikit-learn, websockets, torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu, oneccl_bind_pt -f https://developer.intel.com/ipex-whl-stable-xpu'
+        types: 'training, inference'
+        group: 'science'
+    
+    hydronet:
+        datasets: hydronet_ds1
+        dependencies: 'torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu, torchvision, scikit-learn, pyg, tensorboard, ase, fair-research-login, h5py, tqdm, gdown, torch-scatter, torch-sparse, torch-cluster, torch-spline-conv, torch-geometric'
+        types: 'training, inference'
+        group: 'science'
+
+    # Synthetic Benchmarks 
+    synthetic_regression:
+        dependencies: 'torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu, lightning==1.8.6, websockets, oneccl_bind_pt -f https://developer.intel.com/ipex-whl-stable-xpu'
+        types: 'training'
+        group: 'synthetic'
+        
+    # Example Benchmarks 
+    mnist_tf_keras:
+        datasets: mnist
+        dependencies: 'intel-extension-for-tensorflow[gpu], intel-optimization-for-horovod, scikit-image'
+        types: 'training, inference'
+        group: 'examples'
+
+
+    mnist_torch:
+        datasets: mnist
+        dependencies: 'torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu'
+        types: 'training'
+        group: 'examples'
+
+
+    mnist_torch_horovod:
+        datasets: mnist
+        dependencies: 'torch==1.13.0a0+git6c9b55e -f https://developer.intel.com/ipex-whl-stable-xpu, intel_extension_for_pytorch==1.13.120+xpu -f https://developer.intel.com/ipex-whl-stable-xpu, intel-optimization-for-horovod'
+        types: 'training'
+        group: 'examples'
